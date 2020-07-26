@@ -1,7 +1,8 @@
 import React from 'react';
+import './register.css';
 import firebase from '../../firebase';
 import md5 from 'md5';
-import styles from './register.module.css';
+
 import {
   Grid,
   Segment,
@@ -10,9 +11,9 @@ import {
   Message,
   Form,
 } from 'semantic-ui-react';
-import './Register.css';
+
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+
 import Logo from './icon.png';
 
 class Register extends React.Component {
@@ -139,23 +140,25 @@ class Register extends React.Component {
       loading,
     } = this.state;
     const buttonStyle = {
-      padding: '20px',
+      padding: '3% 8%',
+      fontSize: '20px',
     };
-    const buttonClass = classNames(
-      loading ? 'loading' : '',
-      styles.buttonClass
-    );
+    const inputStyle = {
+      fontSize: '17px',
+    };
+
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
           <img alt="Logo" src={Logo} height="140" width="140" />
-          <Header as="h1" icon color="pink" textAlign="center">
+          <Header className="head" as="h1" icon color="pink" textAlign="center">
             Register for ChatFire
           </Header>
           <div className="mainDiv">
             <Form onSubmit={this.handleSubmit} size="large" autoComplete="off">
               <Segment stacked>
                 <Form.Input
+                  style={inputStyle}
                   fluid
                   name="username"
                   icon="user"
@@ -202,14 +205,15 @@ class Register extends React.Component {
                 />
 
                 <Button
-                  style={{ buttonStyle }}
+                  style={buttonStyle}
                   circular
                   disabled={loading}
-                  className={styles.buttonClass}
+                  className={loading ? 'loading' : ''}
                   color="pink"
-                  content="Submit"
                   size="large"
-                />
+                >
+                  Submit
+                </Button>
               </Segment>
             </Form>
           </div>
