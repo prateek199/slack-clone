@@ -11,7 +11,7 @@ import {
   Message,
   Form,
 } from 'semantic-ui-react';
-
+import '../App.css';
 import { Link } from 'react-router-dom';
 
 import Logo from './icon.png';
@@ -84,7 +84,17 @@ class Register extends React.Component {
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then((createdUser) => {
-          console.log(createdUser);
+          //console.log(createdUser);
+          var user = firebase.auth().currentUser;
+
+          user
+            .sendEmailVerification()
+            .then(function () {
+              window.alert('Verification Email Sent');
+            })
+            .catch(function (error) {
+              // An error happened.
+            });
           createdUser.user
             .updateProfile({
               displayName: this.state.username,
@@ -94,7 +104,7 @@ class Register extends React.Component {
             })
             .then(() => {
               this.saveUser(createdUser).then(() => {
-                console.log('user saved');
+                firebase.auth().signOut();
               });
             })
             .catch((err) => {
@@ -139,13 +149,6 @@ class Register extends React.Component {
       errors,
       loading,
     } = this.state;
-    const buttonStyle = {
-      padding: '3% 8%',
-      fontSize: '20px',
-    };
-    const inputStyle = {
-      fontSize: '17px',
-    };
 
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
@@ -156,9 +159,8 @@ class Register extends React.Component {
           </Header>
           <div className="mainDiv">
             <Form onSubmit={this.handleSubmit} size="large" autoComplete="off">
-              <Segment stacked>
+              <Segment piled color="pink">
                 <Form.Input
-                  style={inputStyle}
                   fluid
                   name="username"
                   icon="user"
@@ -205,7 +207,6 @@ class Register extends React.Component {
                 />
 
                 <Button
-                  style={buttonStyle}
                   circular
                   disabled={loading}
                   className={loading ? 'loading' : ''}
